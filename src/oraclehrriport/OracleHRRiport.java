@@ -32,11 +32,15 @@ public class OracleHRRiport extends javax.swing.JFrame {
       }
       atlagfizetes=osszesfizetes/letszam;
       
-     minimumL.setText(String.valueOf(minimumfizetes)+" ft");
-     maximumL.setText(String.valueOf(maximumfizetes)+" ft");
-     atlagL.setText(String.format("%.2f", atlagfizetes)+" ft");
-     osszesL.setText(String.valueOf(osszesfizetes)+" ft");
+     minimumL.setText(String.valueOf(minimumfizetes)+" Euró");
+     maximumL.setText(String.valueOf(maximumfizetes)+" Euró");
+     atlagL.setText(String.format("%.2f", atlagfizetes)+" Euró");
+     osszesL.setText(String.valueOf(osszesfizetes)+" Euró");
      letszamL.setText(String.valueOf(letszam)+" fő");
+  }
+  private void atlagfizetesrészleg(){
+  
+  
   }
   @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -264,10 +268,10 @@ public class OracleHRRiport extends javax.swing.JFrame {
                                     .addComponent(maximumL, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))))
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel25Layout.createSequentialGroup()
-                        .addGroup(jPanel25Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel25Layout.createSequentialGroup()
+                        .addGroup(jPanel25Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel25Layout.createSequentialGroup()
                                 .addComponent(letszamLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGroup(jPanel25Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addGroup(jPanel25Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(jPanel25Layout.createSequentialGroup()
                                         .addGap(62, 62, 62)
                                         .addGroup(jPanel25Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -280,23 +284,24 @@ public class OracleHRRiport extends javax.swing.JFrame {
                                             .addGroup(jPanel25Layout.createSequentialGroup()
                                                 .addGap(62, 62, 62)
                                                 .addComponent(jLabel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel25Layout.createSequentialGroup()
-                                        .addGap(14, 14, 14)
+                                    .addGroup(jPanel25Layout.createSequentialGroup()
+                                        .addGap(18, 18, 18)
+                                        .addComponent(letszamL, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(0, 0, Short.MAX_VALUE))))
+                            .addGroup(jPanel25Layout.createSequentialGroup()
+                                .addComponent(OsszesLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(jPanel25Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel25Layout.createSequentialGroup()
+                                        .addGap(124, 124, 124)
                                         .addGroup(jPanel25Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addGroup(jPanel25Layout.createSequentialGroup()
-                                                .addComponent(letszamL, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addGap(0, 0, Short.MAX_VALUE))
-                                            .addGroup(jPanel25Layout.createSequentialGroup()
-                                                .addComponent(osszesL, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addGap(18, 18, 18)
-                                                .addGroup(jPanel25Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                    .addGroup(jPanel25Layout.createSequentialGroup()
-                                                        .addComponent(jLabel11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                        .addGap(6, 6, 6))
-                                                    .addComponent(jLabel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))))
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel25Layout.createSequentialGroup()
-                                .addComponent(OsszesLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGap(78, 78, 78)))
+                                                .addComponent(jLabel11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                .addGap(6, 6, 6))
+                                            .addComponent(jLabel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                    .addGroup(jPanel25Layout.createSequentialGroup()
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(osszesL, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(0, 0, Short.MAX_VALUE)))))
                         .addGap(123, 123, 123))))
         );
         jPanel25Layout.setVerticalGroup(
@@ -319,15 +324,14 @@ public class OracleHRRiport extends javax.swing.JFrame {
                     .addComponent(atlagL))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel25Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(osszesL)
                     .addGroup(jPanel25Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(OsszesLabel)
-                        .addComponent(jLabel9)))
+                        .addComponent(osszesL)
+                        .addComponent(OsszesLabel))
+                    .addComponent(jLabel9))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel25Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel25Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(letszamLabel)
-                        .addComponent(jLabel11))
+                .addGroup(jPanel25Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(letszamLabel)
+                    .addComponent(jLabel11)
                     .addComponent(letszamL))
                 .addContainerGap(14, Short.MAX_VALUE))
         );
