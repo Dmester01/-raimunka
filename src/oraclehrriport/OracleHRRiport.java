@@ -1,48 +1,131 @@
 package oraclehrriport;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class OracleHRRiport extends javax.swing.JFrame {
-  private List<OracleHRData> adatLista=null;
 
-  public OracleHRRiport(OracleHRXML xmlModel) {
-    adatLista=xmlModel.getDataList(); //ezt a metódust többször nem szabad meghívni
+    private List<OracleHRData> adatLista = null;
+
+    public OracleHRRiport(OracleHRXML xmlModel) {
+        adatLista = xmlModel.getDataList(); //ezt a metódust többször nem szabad meghívni
 //    for (OracleHRData adat : adatLista)
 //      System.out.println(adat.getEmployeeName());
-    initComponents();
-    setLocationRelativeTo(this);
-    setVisible(true);
-    alapadatokbealitas();
-  }
-  private void alapadatokbealitas(){
-  int minimumfizetes=adatLista.get(0).getMinSalary();
-  int maximumfizetes=adatLista.get(0).getMaxSalary();
-  double atlagfizetes=0;
-  int osszesfizetes=0;
-  int letszam=adatLista.size();
-    for (int i = 0; i < adatLista.size(); i++) {
-       OracleHRData adat=adatLista.get(i);
-       if(adat.getMinSalary()<minimumfizetes){
-        minimumfizetes=adat.getMinSalary();
-       }
-       if(adat.getMaxSalary()>maximumfizetes){
-       maximumfizetes=adat.getMaxSalary();
-       }
-       osszesfizetes=osszesfizetes+adat.getSalary();
-      }
-      atlagfizetes=osszesfizetes/letszam;
-      
-     minimumL.setText(String.valueOf(minimumfizetes)+" Euró");
-     maximumL.setText(String.valueOf(maximumfizetes)+" Euró");
-     atlagL.setText(String.format("%.2f", atlagfizetes)+" Euró");
-     osszesL.setText(String.valueOf(osszesfizetes)+" Euró");
-     letszamL.setText(String.valueOf(letszam)+" fő");
-  }
-  private void atlagfizetesrészleg(){
-  
-  
-  }
-  @SuppressWarnings("unchecked")
+        initComponents();
+        setLocationRelativeTo(this);
+        setVisible(true);
+        alapadatokbealitas();
+        fizetes_Lista();
+        munkaKor_MinMax();
+    }
+
+    private void alapadatokbealitas() {
+        int minimumfizetes = adatLista.get(0).getMinSalary();
+        int maximumfizetes = adatLista.get(0).getMaxSalary();
+        double atlagfizetes = 0;
+        int osszesfizetes = 0;
+        int letszam = adatLista.size();
+        for (int i = 0; i < adatLista.size(); i++) {
+            OracleHRData adat = adatLista.get(i);
+            if (adat.getMinSalary() < minimumfizetes) {
+                minimumfizetes = adat.getMinSalary();
+            }
+            if (adat.getMaxSalary() > maximumfizetes) {
+                maximumfizetes = adat.getMaxSalary();
+            }
+            osszesfizetes = osszesfizetes + adat.getSalary();
+        }
+        atlagfizetes = osszesfizetes / letszam;
+
+        minimumL.setText(String.valueOf(minimumfizetes) + " Euró");
+        maximumL.setText(String.valueOf(maximumfizetes) + " Euró");
+        atlagL.setText(String.format("%.2f", atlagfizetes) + " Euró");
+        osszesL.setText(String.valueOf(osszesfizetes) + " Euró");
+        letszamL.setText(String.valueOf(letszam) + " fő");
+    }
+
+    private void atlagfizetesrészleg() {
+
+    }
+
+    private void fizetes_Lista() {
+        // fizetés -> dolgozók (db).
+        // Táblázatba kell rendezni.
+        // Növekvő sorrend vagy választható csökkenő sorrend
+        // panel név = textAreaLista
+
+        int fizetesekLista[] = new int[adatLista.size()];
+
+        for (int i = 0; i < adatLista.size(); i++) {
+            int listaElem = adatLista.get(i).getSalary();
+            fizetesekLista[i] += listaElem;
+        }
+        int temp;
+        for (int i = 0; i < fizetesekLista.length; i++) {
+            for (int j = i + 1; j < fizetesekLista.length; j++) {
+                if (fizetesekLista[i] > fizetesekLista[j]) {
+                    temp = fizetesekLista[i];
+                    fizetesekLista[i] = fizetesekLista[j];
+                    fizetesekLista[j] = temp;
+                }
+            }
+        }
+
+        for (int i = 0; i < 1; i++) {
+            HashMap<Integer, Integer> repetitions = new HashMap<Integer, Integer>();
+
+            for (int j = 0; j < fizetesekLista.length; ++j) {
+                int item = fizetesekLista[j];
+
+                if (repetitions.containsKey(item)) {
+                    repetitions.put(item, repetitions.get(item) + 1);
+                } else {
+                    repetitions.put(item, 1);
+                }
+            }
+
+            // Now let's print the repetitions out
+            StringBuilder sb = new StringBuilder();
+
+            int overAllCount = 0;
+
+            for (Map.Entry<Integer, Integer> e : repetitions.entrySet()) {
+                if (e.getValue() > 1) {
+                    overAllCount += 1;
+
+                    sb.append("\n");
+                    sb.append(e.getKey() + " Euro");
+                    sb.append(" : ");
+                    sb.append(" (" + e.getValue() + ")");
+                }
+            }
+
+            textAreaLista.append(sb.toString() + "\n");
+        }
+
+    }
+
+    private void munkaKor_MinMax() {
+        String aktualMunka = adatLista.get(0).getJobTitle();
+        int min = adatLista.get(0).getMinSalary();
+        int max = adatLista.get(0).getMaxSalary();
+            for (int i = 1; i < adatLista.size(); i++) {
+                    if (!adatLista.get(i).getJobTitle().equals(aktualMunka)) {
+                        textAreaTenylegesMunka.append(aktualMunka + "  " + min + " - " + max + "\n");
+                        //System.out.println(aktualMunka + "  " + min + " - " + max + "\n");
+                        aktualMunka = adatLista.get(i).getJobTitle();
+                        min = adatLista.get(i).getMinSalary();
+                        max = adatLista.get(i).getMaxSalary();
+                    } 
+                    else{
+                        //System.out.println("Átugortunk egy eggyezést!");
+                    }
+                    
+                }
+            }
+
+    @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
@@ -67,13 +150,13 @@ public class OracleHRRiport extends javax.swing.JFrame {
         jPanel26 = new javax.swing.JPanel();
         jScrollPane22 = new javax.swing.JScrollPane();
         jList22 = new javax.swing.JList<>();
+        textAreaLista = new java.awt.TextArea();
         jPanel27 = new javax.swing.JPanel();
         jLabel49 = new javax.swing.JLabel();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        jList3 = new javax.swing.JList<>();
         jLabel50 = new javax.swing.JLabel();
         jScrollPane5 = new javax.swing.JScrollPane();
         jList5 = new javax.swing.JList<>();
+        textAreaTenylegesMunka = new java.awt.TextArea();
         jPanel28 = new javax.swing.JPanel();
         jScrollPane23 = new javax.swing.JScrollPane();
         jList23 = new javax.swing.JList<>();
@@ -231,15 +314,15 @@ public class OracleHRRiport extends javax.swing.JFrame {
 
         jLabel11.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
 
-        minimumL.setText("jLabel1");
+        minimumL.setText("jLabelMin");
 
-        maximumL.setText("jLabel1");
+        maximumL.setText("jLabelMax");
 
-        atlagL.setText("jLabel1");
+        atlagL.setText("jLabelAtlag");
 
-        osszesL.setText("jLabel1");
+        osszesL.setText("jLabelOsszeg");
 
-        letszamL.setText("jLabel1");
+        letszamL.setText("jLabelLetszam");
 
         javax.swing.GroupLayout jPanel25Layout = new javax.swing.GroupLayout(jPanel25);
         jPanel25.setLayout(jPanel25Layout);
@@ -249,44 +332,31 @@ public class OracleHRRiport extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel25Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel25Layout.createSequentialGroup()
+                        .addGap(77, 77, 77)
                         .addGroup(jPanel25Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel25Layout.createSequentialGroup()
-                                .addComponent(atlagLabel)
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addComponent(maximumLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(jPanel25Layout.createSequentialGroup()
-                        .addGroup(jPanel25Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel25Layout.createSequentialGroup()
-                                .addComponent(minimumLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(minimumL, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel25Layout.createSequentialGroup()
-                                .addGap(77, 77, 77)
-                                .addGroup(jPanel25Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(atlagL, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(maximumL, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(maximumL, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(atlagL, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel25Layout.createSequentialGroup()
                         .addGroup(jPanel25Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel25Layout.createSequentialGroup()
-                                .addComponent(letszamLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(letszamLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 58, Short.MAX_VALUE)
                                 .addGroup(jPanel25Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(jPanel25Layout.createSequentialGroup()
                                         .addGap(62, 62, 62)
                                         .addGroup(jPanel25Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addGroup(jPanel25Layout.createSequentialGroup()
                                                 .addGap(33, 33, 33)
-                                                .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, 1, Short.MAX_VALUE)
                                                 .addGap(82, 82, 82)
-                                                .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, 2, Short.MAX_VALUE)
                                                 .addGap(18, 18, 18))
                                             .addGroup(jPanel25Layout.createSequentialGroup()
                                                 .addGap(62, 62, 62)
                                                 .addComponent(jLabel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                                     .addGroup(jPanel25Layout.createSequentialGroup()
                                         .addGap(18, 18, 18)
-                                        .addComponent(letszamL, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(letszamL, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGap(0, 0, Short.MAX_VALUE))))
                             .addGroup(jPanel25Layout.createSequentialGroup()
                                 .addComponent(OsszesLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -300,9 +370,19 @@ public class OracleHRRiport extends javax.swing.JFrame {
                                             .addComponent(jLabel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                                     .addGroup(jPanel25Layout.createSequentialGroup()
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(osszesL, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(0, 0, Short.MAX_VALUE)))))
-                        .addGap(123, 123, 123))))
+                                        .addComponent(osszesL, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
+                        .addGap(123, 123, 123))
+                    .addGroup(jPanel25Layout.createSequentialGroup()
+                        .addGroup(jPanel25Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(jPanel25Layout.createSequentialGroup()
+                                .addComponent(minimumLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(minimumL, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel25Layout.createSequentialGroup()
+                                .addComponent(atlagLabel)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addComponent(maximumLabel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addContainerGap())))
         );
         jPanel25Layout.setVerticalGroup(
             jPanel25Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -340,12 +420,14 @@ public class OracleHRRiport extends javax.swing.JFrame {
 
         jList22.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jList22.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Fiz1 (2 fő)", "Fiz2 (5 fő)", "...", "Fiz32 (1 fő)" };
+            String[] strings = {};
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
         });
         jList22.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jScrollPane22.setViewportView(jList22);
+
+        textAreaLista.setEditable(false);
 
         javax.swing.GroupLayout jPanel26Layout = new javax.swing.GroupLayout(jPanel26);
         jPanel26.setLayout(jPanel26Layout);
@@ -353,14 +435,18 @@ public class OracleHRRiport extends javax.swing.JFrame {
             jPanel26Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel26Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane22)
+                .addComponent(textAreaLista, javax.swing.GroupLayout.PREFERRED_SIZE, 366, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(94, 94, 94)
+                .addComponent(jScrollPane22, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel26Layout.setVerticalGroup(
             jPanel26Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel26Layout.createSequentialGroup()
                 .addGap(6, 6, 6)
-                .addComponent(jScrollPane22)
+                .addGroup(jPanel26Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(textAreaLista, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jScrollPane22, javax.swing.GroupLayout.DEFAULT_SIZE, 390, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -368,15 +454,6 @@ public class OracleHRRiport extends javax.swing.JFrame {
 
         jLabel49.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel49.setText("Tényleges:");
-
-        jList3.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jList3.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Mkor1 (2400, 3600)", "Mkor2 (6000, 6000)", "Mkor3 (..., ...)" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
-        jList3.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        jScrollPane3.setViewportView(jList3);
 
         jLabel50.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel50.setText("Életpálya szerint:");
@@ -396,12 +473,10 @@ public class OracleHRRiport extends javax.swing.JFrame {
             jPanel27Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel27Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel27Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane3)
-                    .addGroup(jPanel27Layout.createSequentialGroup()
-                        .addComponent(jLabel49, javax.swing.GroupLayout.PREFERRED_SIZE, 257, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 41, Short.MAX_VALUE)))
-                .addGap(18, 18, 18)
+                .addGroup(jPanel27Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabel49, javax.swing.GroupLayout.DEFAULT_SIZE, 257, Short.MAX_VALUE)
+                    .addComponent(textAreaTenylegesMunka, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(18, 18, Short.MAX_VALUE)
                 .addGroup(jPanel27Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel50, javax.swing.GroupLayout.PREFERRED_SIZE, 257, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 355, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -413,13 +488,13 @@ public class OracleHRRiport extends javax.swing.JFrame {
                 .addGroup(jPanel27Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel27Layout.createSequentialGroup()
                         .addGap(28, 28, 28)
-                        .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE))
+                        .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 196, Short.MAX_VALUE))
                     .addGroup(jPanel27Layout.createSequentialGroup()
                         .addGroup(jPanel27Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel49)
                             .addComponent(jLabel50))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jScrollPane3)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(textAreaTenylegesMunka, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
         );
 
@@ -458,7 +533,7 @@ public class OracleHRRiport extends javax.swing.JFrame {
                 .addGroup(jPanel28Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jScrollPane23, javax.swing.GroupLayout.DEFAULT_SIZE, 109, Short.MAX_VALUE)
                     .addComponent(jLabel53, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel28Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel54, javax.swing.GroupLayout.PREFERRED_SIZE, 257, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -471,11 +546,15 @@ public class OracleHRRiport extends javax.swing.JFrame {
                 .addGroup(jPanel28Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel53)
                     .addComponent(jLabel54))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 13, Short.MAX_VALUE)
                 .addGroup(jPanel28Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane23, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 240, Short.MAX_VALUE))
-                .addContainerGap())
+                    .addGroup(jPanel28Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
+                        .addComponent(jScrollPane23, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(26, Short.MAX_VALUE))
+                    .addGroup(jPanel28Layout.createSequentialGroup()
+                        .addGap(77, 77, 77)
+                        .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 211, Short.MAX_VALUE)
+                        .addContainerGap())))
         );
 
         jPanel29.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Átlagfizetés részlegenként", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 14))); // NOI18N
@@ -495,7 +574,7 @@ public class OracleHRRiport extends javax.swing.JFrame {
             jPanel29Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel29Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane24)
+                .addComponent(jScrollPane24, javax.swing.GroupLayout.DEFAULT_SIZE, 231, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel29Layout.setVerticalGroup(
@@ -513,8 +592,8 @@ public class OracleHRRiport extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jPanel25, javax.swing.GroupLayout.PREFERRED_SIZE, 282, Short.MAX_VALUE)
-                    .addComponent(jPanel26, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jPanel25, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel26, javax.swing.GroupLayout.PREFERRED_SIZE, 395, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel27, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -592,7 +671,7 @@ public class OracleHRRiport extends javax.swing.JFrame {
                     .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane9, javax.swing.GroupLayout.DEFAULT_SIZE, 265, Short.MAX_VALUE)
+                .addComponent(jScrollPane9, javax.swing.GroupLayout.DEFAULT_SIZE, 351, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel4Layout.setVerticalGroup(
@@ -921,7 +1000,7 @@ public class OracleHRRiport extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(jPanel23, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jPanel20, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(98, Short.MAX_VALUE))
+                .addContainerGap(184, Short.MAX_VALUE))
         );
         jPanel10Layout.setVerticalGroup(
             jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -967,7 +1046,7 @@ public class OracleHRRiport extends javax.swing.JFrame {
                 .addGroup(jPanel38Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jComboBox6, 0, 249, Short.MAX_VALUE)
                     .addComponent(jScrollPane28))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(12, Short.MAX_VALUE))
         );
         jPanel38Layout.setVerticalGroup(
             jPanel38Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1070,7 +1149,7 @@ public class OracleHRRiport extends javax.swing.JFrame {
             .addGroup(jPanel14Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jPanel38, javax.swing.GroupLayout.PREFERRED_SIZE, 277, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jPanel38, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jPanel39, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
                 .addComponent(jPanel40, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1087,7 +1166,7 @@ public class OracleHRRiport extends javax.swing.JFrame {
                     .addGroup(jPanel14Layout.createSequentialGroup()
                         .addComponent(jPanel38, javax.swing.GroupLayout.PREFERRED_SIZE, 324, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jPanel39, javax.swing.GroupLayout.PREFERRED_SIZE, 270, Short.MAX_VALUE))
+                        .addComponent(jPanel39, javax.swing.GroupLayout.PREFERRED_SIZE, 281, Short.MAX_VALUE))
                     .addComponent(jPanel41, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -1317,7 +1396,7 @@ public class OracleHRRiport extends javax.swing.JFrame {
                         .addComponent(jPanel18, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jPanel15, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(165, Short.MAX_VALUE))
+                .addContainerGap(259, Short.MAX_VALUE))
         );
         jPanel13Layout.setVerticalGroup(
             jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1383,7 +1462,7 @@ public class OracleHRRiport extends javax.swing.JFrame {
             jPanel36Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel36Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane26, javax.swing.GroupLayout.DEFAULT_SIZE, 443, Short.MAX_VALUE)
+                .addComponent(jScrollPane26, javax.swing.GroupLayout.DEFAULT_SIZE, 533, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel36Layout.setVerticalGroup(
@@ -1524,7 +1603,7 @@ public class OracleHRRiport extends javax.swing.JFrame {
                 .addGroup(jPanel34Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel21)
                     .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 111, Short.MAX_VALUE)
                 .addGroup(jPanel34Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel22)
                     .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -1595,7 +1674,7 @@ public class OracleHRRiport extends javax.swing.JFrame {
                             .addComponent(jLabel23)
                             .addComponent(jLabel25))
                         .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jScrollPane27, javax.swing.GroupLayout.DEFAULT_SIZE, 247, Short.MAX_VALUE))
+                    .addComponent(jScrollPane27, javax.swing.GroupLayout.DEFAULT_SIZE, 328, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel7Layout.createSequentialGroup()
@@ -1649,7 +1728,7 @@ public class OracleHRRiport extends javax.swing.JFrame {
         jPanel11.setLayout(jPanel11Layout);
         jPanel11Layout.setHorizontalGroup(
             jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1013, Short.MAX_VALUE)
+            .addGap(0, 1075, Short.MAX_VALUE)
         );
         jPanel11Layout.setVerticalGroup(
             jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1662,7 +1741,7 @@ public class OracleHRRiport extends javax.swing.JFrame {
         jPanel42.setLayout(jPanel42Layout);
         jPanel42Layout.setHorizontalGroup(
             jPanel42Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1013, Short.MAX_VALUE)
+            .addGap(0, 1075, Short.MAX_VALUE)
         );
         jPanel42Layout.setVerticalGroup(
             jPanel42Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1675,7 +1754,7 @@ public class OracleHRRiport extends javax.swing.JFrame {
         jPanel43.setLayout(jPanel43Layout);
         jPanel43Layout.setHorizontalGroup(
             jPanel43Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1013, Short.MAX_VALUE)
+            .addGap(0, 1075, Short.MAX_VALUE)
         );
         jPanel43Layout.setVerticalGroup(
             jPanel43Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1688,7 +1767,7 @@ public class OracleHRRiport extends javax.swing.JFrame {
         jPanel44.setLayout(jPanel44Layout);
         jPanel44Layout.setHorizontalGroup(
             jPanel44Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1013, Short.MAX_VALUE)
+            .addGap(0, 1075, Short.MAX_VALUE)
         );
         jPanel44Layout.setVerticalGroup(
             jPanel44Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1701,7 +1780,7 @@ public class OracleHRRiport extends javax.swing.JFrame {
         jPanel45.setLayout(jPanel45Layout);
         jPanel45Layout.setHorizontalGroup(
             jPanel45Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1013, Short.MAX_VALUE)
+            .addGap(0, 1075, Short.MAX_VALUE)
         );
         jPanel45Layout.setVerticalGroup(
             jPanel45Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1819,7 +1898,6 @@ public class OracleHRRiport extends javax.swing.JFrame {
     private javax.swing.JList<String> jList27;
     private javax.swing.JList<String> jList28;
     private javax.swing.JList<String> jList29;
-    private javax.swing.JList<String> jList3;
     private javax.swing.JList<String> jList30;
     private javax.swing.JList<String> jList31;
     private javax.swing.JList<String> jList4;
@@ -1888,7 +1966,6 @@ public class OracleHRRiport extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane27;
     private javax.swing.JScrollPane jScrollPane28;
     private javax.swing.JScrollPane jScrollPane29;
-    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane30;
     private javax.swing.JScrollPane jScrollPane31;
     private javax.swing.JScrollPane jScrollPane4;
@@ -1910,5 +1987,7 @@ public class OracleHRRiport extends javax.swing.JFrame {
     private javax.swing.JLabel minimumL;
     private javax.swing.JLabel minimumLabel;
     private javax.swing.JLabel osszesL;
+    private java.awt.TextArea textAreaLista;
+    private java.awt.TextArea textAreaTenylegesMunka;
     // End of variables declaration//GEN-END:variables
 }
