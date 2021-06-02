@@ -23,6 +23,7 @@ public class OracleHRRiport extends javax.swing.JFrame {
         munkaKor_MinMax();//Ménesi Csaba
         Jutalékok();//Lakatos Balázs
         eletPlaya();
+        atlagfizetesrészleg();
     }
 
     private void alapadatokbealitas() {
@@ -48,10 +49,6 @@ public class OracleHRRiport extends javax.swing.JFrame {
         atlagL.setText(String.format("%.2f", atlagfizetes) + " Euró");
         osszesL.setText(String.valueOf(osszesfizetes) + " Euró");
         letszamL.setText(String.valueOf(letszam) + " fő");
-    }
-
-    private void atlagfizetesrészleg() {
-
     }
 
     private void fizetes_Lista() {
@@ -178,6 +175,55 @@ public class OracleHRRiport extends javax.swing.JFrame {
             }
         }
     }
+    
+    private void atlagfizetesrészleg(){
+    String  munka[]=new String[adatLista.size()];
+    int  fizetes[]=new int[adatLista.size()];
+    //System.out.println("Hiba a fügvénybelépéssel");
+    for (int i = 0; i < adatLista.size(); i++) {
+      String actualmunka=adatLista.get(i).getJobTitle();
+        munka[i]+=actualmunka;
+        int actualfizetes=adatLista.get(i).getSalary();
+        fizetes[i]+=actualfizetes;
+        //System.out.println("Hiba az 1 for ciklusban");
+     }
+
+
+    ArrayList<String> munkaselect = new ArrayList<>();
+    ArrayList<Integer> fizetesselect = new ArrayList<>();
+    //System.out.println("Hiba az ArrayListbehívással");
+    munkaselect.add(munka[0]);
+    fizetesselect.add(fizetes[0]);
+    //System.out.println("Hiba az arrayListhez adással");
+    int index=0;
+    int osszesfizetes=0;
+    int atlag = 0;
+        //System.out.println(""+munka[5]+" **********:****** "+fizetes[5]);
+    //System.out.println("Hiba a ");
+    for (int i = 0; i <adatLista.size(); i++) {
+        System.out.println("Hiba a 2 for ciklusban belépés után!");
+        
+        if(munkaselect.get(i)!=munka[i]){
+           System.out.println("Hiba az 1 if ben");
+           munkaselect.add(munka[i]);
+           atlag=osszesfizetes/index;
+           fizetesselect.add(atlag);
+           atlag=0;
+       }
+        else if(munkaselect.get(i)==munka[i]){
+           System.out.println("Hiba a 2 if ben");
+           osszesfizetes+=fizetes[i];
+           index++;
+       }
+        else{
+            System.out.println("Hiba a 2 for ciklus else");
+        }
+        
+        System.out.println("Hiba a 2 for ciklusban legvégén");
+        System.out.println("----------------"+munkaselect.get(0)+":"+fizetesselect.get(0)+"-----------------------indexedik elem="+0);
+        System.out.println("----------------"+munka[1]+":"+fizetes[1]+"-----------------------indexedik elem="+1);
+      }
+  }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -218,8 +264,7 @@ public class OracleHRRiport extends javax.swing.JFrame {
         jScrollPane4 = new javax.swing.JScrollPane();
         jList4 = new javax.swing.JList<>();
         jPanel29 = new javax.swing.JPanel();
-        jScrollPane24 = new javax.swing.JScrollPane();
-        jList24 = new javax.swing.JList<>();
+        textAreaAtlagFizResz = new java.awt.TextArea();
         jPanel2 = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
         jLabel17 = new javax.swing.JLabel();
@@ -601,29 +646,20 @@ public class OracleHRRiport extends javax.swing.JFrame {
 
         jPanel29.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Átlagfizetés részlegenként", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 14))); // NOI18N
 
-        jList24.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jList24.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Rnev1 (5423.25)", "Rnev2 (3543.00)", "..." };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
-        jList24.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        jScrollPane24.setViewportView(jList24);
-
         javax.swing.GroupLayout jPanel29Layout = new javax.swing.GroupLayout(jPanel29);
         jPanel29.setLayout(jPanel29Layout);
         jPanel29Layout.setHorizontalGroup(
             jPanel29Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel29Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane24, javax.swing.GroupLayout.DEFAULT_SIZE, 231, Short.MAX_VALUE)
+                .addComponent(textAreaAtlagFizResz, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel29Layout.setVerticalGroup(
             jPanel29Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel29Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane24)
+                .addComponent(textAreaAtlagFizResz, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -1208,7 +1244,7 @@ public class OracleHRRiport extends javax.swing.JFrame {
                     .addGroup(jPanel14Layout.createSequentialGroup()
                         .addComponent(jPanel38, javax.swing.GroupLayout.PREFERRED_SIZE, 324, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jPanel39, javax.swing.GroupLayout.PREFERRED_SIZE, 301, Short.MAX_VALUE))
+                        .addComponent(jPanel39, javax.swing.GroupLayout.PREFERRED_SIZE, 303, Short.MAX_VALUE))
                     .addComponent(jPanel41, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -1934,7 +1970,6 @@ public class OracleHRRiport extends javax.swing.JFrame {
     private javax.swing.JList<String> jList21;
     private javax.swing.JList<String> jList22;
     private javax.swing.JList<String> jList23;
-    private javax.swing.JList<String> jList24;
     private javax.swing.JList<String> jList25;
     private javax.swing.JList<String> jList26;
     private javax.swing.JList<String> jList27;
@@ -2001,7 +2036,6 @@ public class OracleHRRiport extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane21;
     private javax.swing.JScrollPane jScrollPane22;
     private javax.swing.JScrollPane jScrollPane23;
-    private javax.swing.JScrollPane jScrollPane24;
     private javax.swing.JScrollPane jScrollPane25;
     private javax.swing.JScrollPane jScrollPane26;
     private javax.swing.JScrollPane jScrollPane27;
@@ -2027,6 +2061,7 @@ public class OracleHRRiport extends javax.swing.JFrame {
     private javax.swing.JLabel minimumL;
     private javax.swing.JLabel minimumLabel;
     private javax.swing.JLabel osszesL;
+    private java.awt.TextArea textAreaAtlagFizResz;
     private java.awt.TextArea textAreaEletpalya;
     private java.awt.TextArea textAreaLista;
     private java.awt.TextArea textAreaTenylegesMunka;
