@@ -89,7 +89,7 @@ public class OracleHRRiport extends javax.swing.JFrame {
                 }
             }
 
-            textAreaLista.append(kulonbozoFizetesek.get(i) + " : " + "(" + db + ")\n");
+            textAreaLista.add(kulonbozoFizetesek.get(i) + " : " + "(" + db + ")\n");
             i++;
         }
 
@@ -101,7 +101,7 @@ public class OracleHRRiport extends javax.swing.JFrame {
         int max = adatLista.get(0).getMaxSalary();
         for (int i = 1; i < adatLista.size(); i++) {
             if (!adatLista.get(i).getJobTitle().equals(aktualMunka)) {
-                textAreaTenylegesMunka.append(aktualMunka + "  " + min + " - " + max + "\n");
+                textAreaTenylegesMunka.add(aktualMunka + "  " + min + " - " + max + "\n");
                 //System.out.println(aktualMunka + "  " + min + " - " + max + "\n");
                 aktualMunka = adatLista.get(i).getJobTitle();
                 min = adatLista.get(i).getMinSalary();
@@ -165,7 +165,7 @@ public class OracleHRRiport extends javax.swing.JFrame {
         int max = adatLista.get(0).getMaxSalary();
         for (int i = 1; i < adatLista.size(); i++) {
             if (!adatLista.get(i).getJobTitle().equals(aktualMunka)) {
-                textAreaEletpalya.append(aktualMunka + " (" + min + " , " + max + ")\n");
+                textAreaEletpalya.add(aktualMunka + " (" + min + " , " + max + ")\n");
                 //System.out.println(aktualMunka + "  " + min + " - " + max + "\n");
                 aktualMunka = adatLista.get(i).getJobTitle();
                 min = adatLista.get(i).getMinSalary();
@@ -250,12 +250,12 @@ public class OracleHRRiport extends javax.swing.JFrame {
         jPanel26 = new javax.swing.JPanel();
         jScrollPane22 = new javax.swing.JScrollPane();
         jList22 = new javax.swing.JList<>();
-        textAreaLista = new java.awt.TextArea();
+        textAreaLista = new java.awt.List();
         jPanel27 = new javax.swing.JPanel();
         jLabel49 = new javax.swing.JLabel();
         jLabel50 = new javax.swing.JLabel();
-        textAreaTenylegesMunka = new java.awt.TextArea();
-        textAreaEletpalya = new java.awt.TextArea();
+        textAreaTenylegesMunka = new java.awt.List();
+        textAreaEletpalya = new java.awt.List();
         jPanel28 = new javax.swing.JPanel();
         jScrollPane23 = new javax.swing.JScrollPane();
         jList23 = new javax.swing.JList<>();
@@ -264,7 +264,7 @@ public class OracleHRRiport extends javax.swing.JFrame {
         jScrollPane4 = new javax.swing.JScrollPane();
         jList4 = new javax.swing.JList<>();
         jPanel29 = new javax.swing.JPanel();
-        textAreaAtlagFizResz = new java.awt.TextArea();
+        textAreaAtlagFizResz = new java.awt.List();
         jPanel2 = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
         jLabel17 = new javax.swing.JLabel();
@@ -525,26 +525,24 @@ public class OracleHRRiport extends javax.swing.JFrame {
         jList22.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jScrollPane22.setViewportView(jList22);
 
-        textAreaLista.setEditable(false);
-
         javax.swing.GroupLayout jPanel26Layout = new javax.swing.GroupLayout(jPanel26);
         jPanel26.setLayout(jPanel26Layout);
         jPanel26Layout.setHorizontalGroup(
             jPanel26Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel26Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(textAreaLista, javax.swing.GroupLayout.PREFERRED_SIZE, 366, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(94, 94, 94)
+                .addComponent(textAreaLista, javax.swing.GroupLayout.PREFERRED_SIZE, 368, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(92, 92, 92)
                 .addComponent(jScrollPane22, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel26Layout.setVerticalGroup(
             jPanel26Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel26Layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel26Layout.createSequentialGroup()
                 .addGap(6, 6, 6)
-                .addGroup(jPanel26Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel26Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(textAreaLista, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPane22, javax.swing.GroupLayout.DEFAULT_SIZE, 390, Short.MAX_VALUE))
+                    .addComponent(jScrollPane22, javax.swing.GroupLayout.DEFAULT_SIZE, 404, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -562,10 +560,12 @@ public class OracleHRRiport extends javax.swing.JFrame {
             jPanel27Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel27Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel27Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel49, javax.swing.GroupLayout.DEFAULT_SIZE, 257, Short.MAX_VALUE)
+                .addGroup(jPanel27Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel27Layout.createSequentialGroup()
+                        .addComponent(jLabel49, javax.swing.GroupLayout.PREFERRED_SIZE, 257, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 30, Short.MAX_VALUE))
                     .addComponent(textAreaTenylegesMunka, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(18, 40, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel27Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel50, javax.swing.GroupLayout.PREFERRED_SIZE, 257, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(textAreaEletpalya, javax.swing.GroupLayout.PREFERRED_SIZE, 345, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -2061,10 +2061,10 @@ public class OracleHRRiport extends javax.swing.JFrame {
     private javax.swing.JLabel minimumL;
     private javax.swing.JLabel minimumLabel;
     private javax.swing.JLabel osszesL;
-    private java.awt.TextArea textAreaAtlagFizResz;
-    private java.awt.TextArea textAreaEletpalya;
-    private java.awt.TextArea textAreaLista;
-    private java.awt.TextArea textAreaTenylegesMunka;
+    private java.awt.List textAreaAtlagFizResz;
+    private java.awt.List textAreaEletpalya;
+    private java.awt.List textAreaLista;
+    private java.awt.List textAreaTenylegesMunka;
     // End of variables declaration//GEN-END:variables
 
 }

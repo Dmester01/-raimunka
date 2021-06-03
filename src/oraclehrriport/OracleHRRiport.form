@@ -365,8 +365,8 @@
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="textAreaLista" min="-2" pref="366" max="-2" attributes="0"/>
-                          <EmptySpace min="-2" pref="94" max="-2" attributes="0"/>
+                          <Component id="textAreaLista" min="-2" pref="368" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="92" max="-2" attributes="0"/>
                           <Component id="jScrollPane22" pref="0" max="32767" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                       </Group>
@@ -374,11 +374,11 @@
                 </DimensionLayout>
                 <DimensionLayout dim="1">
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" alignment="0" attributes="0">
+                      <Group type="102" alignment="1" attributes="0">
                           <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="103" groupAlignment="1" attributes="0">
                               <Component id="textAreaLista" max="32767" attributes="0"/>
-                              <Component id="jScrollPane22" pref="390" max="32767" attributes="0"/>
+                              <Component id="jScrollPane22" pref="404" max="32767" attributes="0"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                       </Group>
@@ -409,10 +409,7 @@
                     </Component>
                   </SubComponents>
                 </Container>
-                <Component class="java.awt.TextArea" name="textAreaLista">
-                  <Properties>
-                    <Property name="editable" type="boolean" value="false"/>
-                  </Properties>
+                <Component class="java.awt.List" name="textAreaLista">
                 </Component>
               </SubComponents>
             </Container>
@@ -432,11 +429,14 @@
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                              <Component id="jLabel49" pref="257" max="32767" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Group type="102" attributes="0">
+                                  <Component id="jLabel49" min="-2" pref="257" max="-2" attributes="0"/>
+                                  <EmptySpace min="0" pref="30" max="32767" attributes="0"/>
+                              </Group>
                               <Component id="textAreaTenylegesMunka" max="32767" attributes="0"/>
                           </Group>
-                          <EmptySpace type="separate" pref="40" max="32767" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="jLabel50" min="-2" pref="257" max="-2" attributes="0"/>
                               <Component id="textAreaEletpalya" min="-2" pref="345" max="-2" attributes="0"/>
@@ -480,9 +480,9 @@
                     <Property name="text" type="java.lang.String" value="&#xc9;letp&#xe1;lya szerint:"/>
                   </Properties>
                 </Component>
-                <Component class="java.awt.TextArea" name="textAreaTenylegesMunka">
+                <Component class="java.awt.List" name="textAreaTenylegesMunka">
                 </Component>
-                <Component class="java.awt.TextArea" name="textAreaEletpalya">
+                <Component class="java.awt.List" name="textAreaEletpalya">
                 </Component>
               </SubComponents>
             </Container>
@@ -644,7 +644,7 @@
                 </DimensionLayout>
               </Layout>
               <SubComponents>
-                <Component class="java.awt.TextArea" name="textAreaAtlagFizResz">
+                <Component class="java.awt.List" name="textAreaAtlagFizResz">
                 </Component>
               </SubComponents>
             </Container>
