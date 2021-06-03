@@ -160,70 +160,67 @@ public class OracleHRRiport extends javax.swing.JFrame {
 
     private void eletPlaya() {
         //textAreaEletpalya
-        String aktualMunka = adatLista.get(0).getJobTitle();
+        String aktualDolgozo = adatLista.get(0).getJobTitle();
         int min = adatLista.get(0).getMinSalary();
-        int max = adatLista.get(0).getMaxSalary();
+        int max = adatLista.get(0).getSalary();
         for (int i = 1; i < adatLista.size(); i++) {
-            if (!adatLista.get(i).getJobTitle().equals(aktualMunka)) {
-                textAreaEletpalya.add(aktualMunka + " (" + min + " , " + max + ")\n");
+            if (!adatLista.get(i).getEmployeeName().equals(aktualDolgozo)) {
+                textAreaEletpalya.add(aktualDolgozo + " (" + min + " , " + max + ")\n");
                 //System.out.println(aktualMunka + "  " + min + " - " + max + "\n");
-                aktualMunka = adatLista.get(i).getJobTitle();
+                aktualDolgozo = adatLista.get(i).getEmployeeName();
                 min = adatLista.get(i).getMinSalary();
-                max = adatLista.get(i).getMaxSalary();
+                max = adatLista.get(i).getSalary();
             } else {
                 //System.out.println("Átugortunk egy eggyezést!");
             }
         }
     }
-    
-    private void atlagfizetesrészleg(){
-    String  munka[]=new String[adatLista.size()];
-    int  fizetes[]=new int[adatLista.size()];
-    //System.out.println("Hiba a fügvénybelépéssel");
-    for (int i = 0; i < adatLista.size(); i++) {
-      String actualmunka=adatLista.get(i).getJobTitle();
-        munka[i]+=actualmunka;
-        int actualfizetes=adatLista.get(i).getSalary();
-        fizetes[i]+=actualfizetes;
-        //System.out.println("Hiba az 1 for ciklusban");
-     }
 
-
-    ArrayList<String> munkaselect = new ArrayList<>();
-    ArrayList<Integer> fizetesselect = new ArrayList<>();
-    //System.out.println("Hiba az ArrayListbehívással");
-    munkaselect.add(munka[0]);
-    fizetesselect.add(fizetes[0]);
-    //System.out.println("Hiba az arrayListhez adással");
-    int index=0;
-    int osszesfizetes=0;
-    int atlag = 0;
-        //System.out.println(""+munka[5]+" **********:****** "+fizetes[5]);
-    //System.out.println("Hiba a ");
-    for (int i = 0; i <adatLista.size(); i++) {
-        System.out.println("Hiba a 2 for ciklusban belépés után!");
-        
-        if(munkaselect.get(i)!=munka[i]){
-           System.out.println("Hiba az 1 if ben");
-           munkaselect.add(munka[i]);
-           atlag=osszesfizetes/index;
-           fizetesselect.add(atlag);
-           atlag=0;
-       }
-        else if(munkaselect.get(i)==munka[i]){
-           System.out.println("Hiba a 2 if ben");
-           osszesfizetes+=fizetes[i];
-           index++;
-       }
-        else{
-            System.out.println("Hiba a 2 for ciklus else");
+    private void atlagfizetesrészleg() {
+        String munka[] = new String[adatLista.size()];
+        int fizetes[] = new int[adatLista.size()];
+        //System.out.println("Hiba a fügvénybelépéssel");
+        for (int i = 0; i < adatLista.size(); i++) {
+            String actualmunka = adatLista.get(i).getJobTitle();
+            munka[i] += actualmunka;
+            int actualfizetes = adatLista.get(i).getSalary();
+            fizetes[i] += actualfizetes;
+            //System.out.println("Hiba az 1 for ciklusban");
         }
-        
-        System.out.println("Hiba a 2 for ciklusban legvégén");
-        System.out.println("----------------"+munkaselect.get(0)+":"+fizetesselect.get(0)+"-----------------------indexedik elem="+0);
-        System.out.println("----------------"+munka[1]+":"+fizetes[1]+"-----------------------indexedik elem="+1);
-      }
-  }
+
+        ArrayList<String> munkaselect = new ArrayList<>();
+        ArrayList<Integer> fizetesselect = new ArrayList<>();
+        //System.out.println("Hiba az ArrayListbehívással");
+        munkaselect.add(munka[0]);
+        fizetesselect.add(fizetes[0]);
+        //System.out.println("Hiba az arrayListhez adással");
+        int index = 0;
+        int osszesfizetes = 0;
+        int atlag = 0;
+        //System.out.println(""+munka[5]+" **********:****** "+fizetes[5]);
+        //System.out.println("Hiba a ");
+        for (int i = 0; i < adatLista.size(); i++) {
+            System.out.println("Hiba a 2 for ciklusban belépés után!");
+
+            if (munkaselect.get(i) != munka[i]) {
+                System.out.println("Hiba az 1 if ben");
+                munkaselect.add(munka[i]);
+                atlag = osszesfizetes / index;
+                fizetesselect.add(atlag);
+                atlag = 0;
+            } else if (munkaselect.get(i) == munka[i]) {
+                System.out.println("Hiba a 2 if ben");
+                osszesfizetes += fizetes[i];
+                index++;
+            } else {
+                System.out.println("Hiba a 2 for ciklus else");
+            }
+
+            System.out.println("Hiba a 2 for ciklusban legvégén");
+            System.out.println("----------------" + munkaselect.get(0) + ":" + fizetesselect.get(0) + "-----------------------indexedik elem=" + 0);
+            System.out.println("----------------" + munka[1] + ":" + fizetes[1] + "-----------------------indexedik elem=" + 1);
+        }
+    }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
